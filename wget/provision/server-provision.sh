@@ -1,3 +1,5 @@
+sudo systemctl disable firewalld 
+sudo systemctl stop firewalld
 
 mkdir /tmp/ftptest
 cd /tmp/ftptest
@@ -8,6 +10,8 @@ _EOF_
 
 sudo dnf install -y pyftpdlib
 
+sudo python /vagrant/provision/ftp-set-timeout.py
 sudo python -m pyftpdlib -p21 -w &
 sleep 5
-sudo python /vagrant/provision/wget-exploit.sh &
+sudo python /vagrant/provision/wget-exploit.py > /vagrant/output-data/exploit-output.txt 2>&1 &
+
