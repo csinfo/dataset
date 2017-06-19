@@ -4,5 +4,5 @@
 #  sleep 5
 #done
 
-cp /tmp/audit.log /vagrant/prov-data/
-cp /tmp/camflow.clg /vagrant/prov-data/
+cp /tmp/audit.log /vagrant/prov-data/audit.log
+cp /tmp/camflow.clg /vagrant/prov-data/camflow.clg
