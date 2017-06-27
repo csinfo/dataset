@@ -1,3 +1,0 @@
-Starting audit service...
-Output option: log
-{"prefix":{"prov" : "http://www.w3.org/ns/prov", "cf":"http://www.camflow.org"},"entity":{"146934235":{"prov:label":"[machine] 146934235","cf:camflow":"v0.2.1","cf:sysname":"Linux","cf:nodename":"fedora25-vbox.localdomain","cf:release":"4.11.3camflow-0.3.2","cf:version":"#1 SMP Wed May 31 16:31:55 UTC 2017","cf:machine":"x86_64", "cf:date":"2017:06:14T15:35:20"}}}
