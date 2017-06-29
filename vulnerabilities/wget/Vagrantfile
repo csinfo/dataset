@@ -78,8 +78,8 @@ Vagrant.configure(2) do |config|
      vb.name = "CamFlow-client-wget3"
     end
     client.vm.network "private_network", ip: "192.168.33.9"
-    #client.vm.provision "shell", path: "provision/client-pre-provision-good.sh"
-    client.vm.provision "shell", path: "provision/client-pre-provision-bad.sh"
+    client.vm.provision "shell", path: "provision/client-pre-provision-good.sh"
+    #client.vm.provision "shell", path: "provision/client-pre-provision-bad.sh"
     client.vm.provision "shell", path: "provision/config_camflow.sh"
     client.vm.provision :unix_reboot
     client.vm.provision "shell", path: "provision/wget-normal.sh"
