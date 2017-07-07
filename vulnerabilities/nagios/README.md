@@ -1,4 +1,4 @@
-									The meat of the exploit
+						The meat of the exploit
 
 "Nagios daemon was found to open the log file before dropping its root privileges on startup.
 
@@ -13,7 +13,7 @@ from nagios user/group to root for example by creating a malicious
 An important point to note is that a user has to have root privilages in order to have read/write permissions in directory /etc 
 
 
-									Simulation and Obtain data
+						Simulation and Obtain data
 To simulate exploited behavior and consequently get its provenance data, go to 'exploite-nagios' folder and do 'vagrant up'. 
 
 To simulate normal behavior and get its provenance data, go to 'normal-nagios' folder and do 'vagrant up'. 
@@ -21,8 +21,12 @@ To simulate normal behavior and get its provenance data, go to 'normal-nagios' f
 (Note: the provenance data you will get is pinging 5 times of the server with check_ping commands, with the same parameters as check-host-alive. This simulated interaction with nagios is done by check_ping.sh provision. Write your own provision to get more provenance data of the usual behavior of nagios based on how you would personally interact/use it! Check out commands.cfg) 
 
 
-									Files 
+						Files 
 commands.cfg - a file that user can take a look to see how they can interact with nagios which supposedly monitors the servers, networks, infrastructure of their chioce
+
+
+						Known Issues: 
+"server" VM doesn't restart with default kernal after first 'vagrant up'
 
  
 
