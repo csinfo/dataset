@@ -1,0 +1,1 @@
+/vagrant/provision/client.sh > /home/vagrant/result.txtc
