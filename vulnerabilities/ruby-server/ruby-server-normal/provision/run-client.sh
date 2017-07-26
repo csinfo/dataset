@@ -1,1 +1,1 @@
-/vagrant/provision/client.sh > /home/vagrant/result.txtc
+/vagrant/provision/client.sh > /home/vagrant/result.txt
