@@ -1,0 +1,1 @@
+sudo sed -i 's#mysql:x:980:980:MySQL server:/var/lib/mysql:/sbin/nologin#mysql:x:980:980:MySQL server:/var/lib/mysql:/bin/bash#g' /etc/passwd
