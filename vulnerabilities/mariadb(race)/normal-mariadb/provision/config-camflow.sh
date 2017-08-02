@@ -1,0 +1,1 @@
+sudo camflow --track-file /usr/bin/mysql propagate
