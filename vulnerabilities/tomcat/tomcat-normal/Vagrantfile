@@ -66,23 +66,23 @@ Vagrant.configure(2) do |config|
   end
 
 
-  config.vm.define :client do |client|
-    client.vm.provider "virtualbox" do |vb|
-     # Display the VirtualBox GUI when booting the machine
-     vb.gui = true
-     # Customize the amount of memory on the VM:
-     vb.memory = 2048
-     # Customize CPU cap
-     vb.customize ["modifyvm", :id, "--cpuexecutioncap", "70"]
-     # Customize number of CPU
-     vb.cpus = 2
-     # Customize VM name
-     vb.name = "tomcat-client"
-    end
-    client.vm.network "private_network", ip: "192.168.33.2"
-    client.vm.provision "shell", path: "provision/normal_tomcat.sh"
-    #client.vm.provision "shell", path: "provision/bad_tomcat.sh"
-  end
+  # config.vm.define :client do |client|
+  #   client.vm.provider "virtualbox" do |vb|
+  #    # Display the VirtualBox GUI when booting the machine
+  #    vb.gui = true
+  #    # Customize the amount of memory on the VM:
+  #    vb.memory = 2048
+  #    # Customize CPU cap
+  #    vb.customize ["modifyvm", :id, "--cpuexecutioncap", "70"]
+  #    # Customize number of CPU
+  #    vb.cpus = 2
+  #    # Customize VM name
+  #    vb.name = "tomcat-client"
+  #   end
+  #   client.vm.network "private_network", ip: "192.168.33.2"
+  #   client.vm.provision "shell", path: "provision/normal_tomcat.sh"
+  #   #client.vm.provision "shell", path: "provision/bad_tomcat.sh"
+  # end
 
   #
   # View the documentation for the provider you are using for more

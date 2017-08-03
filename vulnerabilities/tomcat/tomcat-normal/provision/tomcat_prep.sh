@@ -42,12 +42,12 @@ sudo camflow --track-file /usr/lib/tmpfiles.d/tomcat.conf propagate
 # simulate how the system on boot, other services, cronjobs, startup scripts trigger the run of the target file
 sudo /usr/bin/systemd-tmpfiles --create
 
-sudo cp /tmp/audit.log /vagrant/prov-data/immiediate-before-normal-after-run-tomcat-conf.log
+# sudo cp /tmp/audit.log /vagrant/prov-data/immiediate-before-normal-after-run-tomcat-conf.log
 
-sleep 15
+# give camflow some time for provenance data to be written in audit.log
+# sleep 30
 
 # get data before using tomcat as a server 
-sudo cp /tmp/audit.log /vagrant/prov-data/before-normal-after-run-tomcat-conf.log
-
+# sudo cp /tmp/audit.log /vagrant/prov-data/before-normal-after-run-tomcat-conf.log
 #sudo /sbin/shutdown -r now
 
