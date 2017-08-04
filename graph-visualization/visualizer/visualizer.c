@@ -16,9 +16,12 @@
 //  3. Parameterized the input file path and the output file path of this program, identified by -i and -o, 
 //     respectively, on the command line. (Added the get_files function.)
 //  
-//  Usage of this program: 
-//  ./program_name -i input_file_path.txt -o output_file_path.bmp
+//  4. added -l option to specify the line number to highlight
 //
+//  Usage of this program: 
+//  ./program_name -i input_file_path.txt -o output_file_path.bmp -l line_number_to_highlight
+//  
+//   options -i and -o are required
 
 #include <stdio.h>
 #include <string.h>
@@ -90,10 +93,11 @@ void free_matrix(void** matrix, size_t height){
 
 // getting input file path and output file path from command line by options -i for input, and -o for 
 // output
-void get_files(char** inputfile, char** outputfile, int argc, char* argv[], size_t filename_length){
+void get_files(char** inputfile, char** outputfile, int argc, char* argv[], size_t filename_length,
+    int* opt_l, size_t* line_num){
     int index;
     int c;
-    while((c = getopt(argc, argv, "i:o:")) != -1){
+    while((c = getopt(argc, argv, "i:o:l:")) != -1){
         switch(c){
             case 'i': 
                 *inputfile = optarg;
@@ -101,8 +105,12 @@ void get_files(char** inputfile, char** outputfile, int argc, char* argv[], size
             case 'o':
                 *outputfile = optarg;
                 break;
+            case 'l':
+                *opt_l = 1;
+                *line_num =atoi(optarg);
+                break;
             case '?': 
-                if(optopt == 'i' | optopt == 'o')
+                if(optopt == 'i' | optopt == 'o' | optopt == 'l')
                     fprintf(stderr, "Option -%c requires an argument.\n", optopt);
                 else if (isprint (optopt))
                     fprintf (stderr, "Unknown option `-%c'.\n", optopt);
@@ -119,6 +127,14 @@ void get_files(char** inputfile, char** outputfile, int argc, char* argv[], size
         exit(-1);
     }
 
+}
+
+// returns -1 if specified highlight is out of matrix bound; 0, otherwise.
+int check_highlight_bound(size_t height, int opt_l, size_t line_num){
+    if(opt_l && line_num >= height){
+        return -1;
+    }
+    return 0;
 }
 
 int main(int argc, const char * argv[]) {
@@ -144,9 +160,12 @@ int main(int argc, const char * argv[]) {
     unsigned int mixed;
     int red, green, blue;
 
+    //options
+    int opt_l = 0;// option for highlighting a single line; 0: false, 1: true
+    size_t line_num = 0;
 
     //getting input and output file names from command line
-    get_files(&inputfile, &outputfile, argc, (char**) argv, ARGLEN);
+    get_files(&inputfile, &outputfile, argc, (char**) argv, ARGLEN, &opt_l, &line_num );
 
     // * produce matrix of pixel data from edgelist
     //open the file to read edge list
@@ -170,6 +189,12 @@ int main(int argc, const char * argv[]) {
     }
     width = max_node + 1; 
     height = width;
+
+    // bound checking for highlighting line 
+    if(check_highlight_bound(height, opt_l, line_num) == -1){
+        perror("higlight specified is out of bound\n");
+        return -1; 
+    }
     // printf("width == height == %d\n", (int)width);
     
     // uint64_t frompixels[width][height];
@@ -296,10 +321,21 @@ int main(int argc, const char * argv[]) {
     for (y = height - 1; y >= 0; y--) { //BMP images are proceeded from the bottom to the top
         for (x = 0; x < width; x++) {
             //fprintf(stdout, "%llu\n", frompixels[x][y]);
+
+            // no edge from x to y
             if(frompixels[x][y] == 0 && topixels[x][y] == 0 && edgepixels[x][y] == 0){
-                red = 0; 
-                green = 0; 
-                blue = 0;
+                //height line with white if (x, y) is on the line
+                if(opt_l && y == line_num - 1){
+                    red = 255;
+                    green = 255; 
+                    blue = 255;
+                }
+                //mark pixel as black
+                else{ 
+                    red = 0; 
+                    green = 0; 
+                    blue = 0;
+                }
             }
             else{
                 memcpy(&array[0], &frompixels[x][y], sizeof(uint64_t));
