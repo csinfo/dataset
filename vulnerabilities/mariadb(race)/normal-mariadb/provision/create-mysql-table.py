@@ -3,7 +3,8 @@ from collections import namedtuple
 import MySQLdb
 
 
-
+# construct a mysql table by first making a struct that contains all the entries in the table.
+# Link gives the names of the fields.
 Link = namedtuple('Link', ['id', 'submitter_id', 'submitted_time', 'votes',
                            'title', 'url'])
 
@@ -83,29 +84,24 @@ links = [
          "An R programmer looks at Julia",
          "http://www.r-bloggers.com/an-r-programmer-looks-at-julia/")]
 
- # the above table is credited towards a web application course from Udacity
-
+# connect to the existing mysql Normal DB
 db = MySQLdb.connect("localhost", "vagrant", "vagrant", "normal")
 
+# iterator to go through the normal DB
 cursor = db.cursor()
 
-# cursor.execute ('drop table if exists links')
-
+# give command to mysql to create a links table in normal database
 cursor.execute('create table links' + 
     '(id integer, submitter_id integer, submitted_time integer, ' + 
     'votes integer, title text, url text) engine = MyISAM')
 
+# populate the links table
 for l in links: 
 	#try: 
 	cursor.execute('insert into links values("%d", "%d", "%d", "%d", "%s", "%s")' % 
         (l.id, l.submitter_id, l.submitted_time, l.votes, l.title, l.url))
-    # db.commit()
-	#except: 
-		#db.rollback()
+# Debug only
 # print "%d rows were updated" % cursor.rowcount
-
-# for link_tuple in cursor:
-
 # rows = cursor.fetchall()
 # for row in rows: 
 #     print row
