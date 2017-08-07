@@ -17,11 +17,13 @@
 //     respectively, on the command line. (Added the get_files function.)
 //  
 //  4. added -l option to specify the line number to highlight
+// 
+//  5. added -f option to specify the line numbers to highlight by file 
 //
 //  Usage of this program: 
-//  ./program_name -i input_file_path.txt -o output_file_path.bmp -l line_number_to_highlight
+//  ./program_name -i input_file_path.txt -o output_file_path.bmp -l line_number_to_highlight -f path_to_highlight_file.txt
 //  
-//   options -i and -o are required
+//   options -i and -o are required; others are optional. 
 
 #include <stdio.h>
 #include <string.h>
@@ -33,109 +35,17 @@
 #include <ctype.h>
 
 #define ARGLEN 100
-// #define width 7840//in pixels
-// #define height 7840 //in pixels
-// #define FILENAME "/Users/DongyuLi/Desktop/Interns17/graph-visualization/output/graph1_auto_width.bmp"
-// #define INPUTFILE "/Users/DongyuLi/Desktop/Interns17/graph-visualization/edgelist/edgelist1.txt"
 
-unsigned int hash(char *str, int length)
-{
-    unsigned int hash = 5381;
-    
-    while (length--)
-        hash = ((hash << 5) + hash) + *str++; /* hash * 33 + c */
-    
-    return hash;
-}
-
-uint64_t convert(const char *text)
-{
-    uint64_t number=0;
-    
-    for(; *text; text++)
-    {
-        char digit=*text-'0';
-        number=(number*10)+digit;
-    }
-   return number;
-}
-
-
-// allocate heap memory for a 2-D matrix with height height, width width, 
-// and each element has size elem_size. 
-void** alloc_matrix(size_t height, size_t width, size_t elem_size){
-    void** result = malloc(height * sizeof(void*));
-    if(result == NULL){
-        return NULL;
-    }
-    for(size_t i = 0; i < height; i++){
-        result[i] = malloc(width * elem_size);
-        if(result[i] == NULL){
-            //cleanup allocated memory and then return NULL
-            for(int j = 0; j < i; j++){
-                free(result[j]);
-            }
-            free(result);
-            return NULL;
-        }
-    }
-    return result;
-}
-
-
-// free heap memory for a 2-D matrix matrix with height height.
-void free_matrix(void** matrix, size_t height){
-    for(size_t i = 0; i < height; i++){
-        free(matrix[i]);
-    }
-    free(matrix);
-}
-
-// getting input file path and output file path from command line by options -i for input, and -o for 
-// output
-void get_files(char** inputfile, char** outputfile, int argc, char* argv[], size_t filename_length,
-    int* opt_l, size_t* line_num){
-    int index;
-    int c;
-    while((c = getopt(argc, argv, "i:o:l:")) != -1){
-        switch(c){
-            case 'i': 
-                *inputfile = optarg;
-                break; 
-            case 'o':
-                *outputfile = optarg;
-                break;
-            case 'l':
-                *opt_l = 1;
-                *line_num =atoi(optarg);
-                break;
-            case '?': 
-                if(optopt == 'i' | optopt == 'o' | optopt == 'l')
-                    fprintf(stderr, "Option -%c requires an argument.\n", optopt);
-                else if (isprint (optopt))
-                    fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-                else
-                    fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
-                exit(-1);
-            default:
-                abort();
-        }
-    }
-
-    for (index = optind; index < argc; index++){
-        printf ("Non-option argument %s\n", argv[index]);
-        exit(-1);
-    }
-
-}
-
-// returns -1 if specified highlight is out of matrix bound; 0, otherwise.
-int check_highlight_bound(size_t height, int opt_l, size_t line_num){
-    if(opt_l && line_num >= height){
-        return -1;
-    }
-    return 0;
-}
+unsigned int hash(char *str, int length);
+uint64_t convert(const char *text);
+void** alloc_matrix(size_t height, size_t width, size_t elem_size);
+void free_matrix(void** matrix, size_t height);
+void get_files(char** inputfile, char** outputfile, int argc, char* argv[], size_t filename_length, 
+    int* opt_l, size_t* line_num, char** line_highlight_file);
+int check_highlight_bound(size_t height, int opt_l, size_t line_num);
+void* alloc_array(size_t len, size_t elem_size);
+void free_array(void* array);
+char* parse_highlights(FILE* highlight_fstream, size_t height);
 
 int main(int argc, const char * argv[]) {
     char* inputfile;
@@ -163,16 +73,19 @@ int main(int argc, const char * argv[]) {
     //options
     int opt_l = 0;// option for highlighting a single line; 0: false, 1: true
     size_t line_num = 0;
+    char *line_highlight_file = NULL;
+    FILE* highlight_fstream;
+    char* highlights = NULL;
 
     //getting input and output file names from command line
-    get_files(&inputfile, &outputfile, argc, (char**) argv, ARGLEN, &opt_l, &line_num );
+    get_files(&inputfile, &outputfile, argc, (char**) argv, ARGLEN, &opt_l, &line_num, &line_highlight_file);
 
     // * produce matrix of pixel data from edgelist
     //open the file to read edge list
     input = fopen(inputfile, "r");
     if (input == NULL) {
         perror("Error opening input file\n");
-        return -1;
+        exit(1);
     }
     while (fgets(line, 100, input) != NULL) {
         token = strtok(line, "\t");
@@ -195,6 +108,17 @@ int main(int argc, const char * argv[]) {
         perror("higlight specified is out of bound\n");
         return -1; 
     }
+
+    //parse line_highlight_file if exists
+    if(line_highlight_file != NULL){
+        highlight_fstream = fopen(line_highlight_file, "r");
+        if(highlight_fstream == NULL){
+            perror("Error opening line highlighting file\n");
+            exit(1);
+        }
+        highlights = parse_highlights(highlight_fstream, height);
+    }
+
     // printf("width == height == %d\n", (int)width);
     
     // uint64_t frompixels[width][height];
@@ -204,20 +128,20 @@ int main(int argc, const char * argv[]) {
     uint64_t** topixels = (uint64_t**)alloc_matrix(height, width, sizeof(uint64_t));
     uint64_t** edgepixels = (uint64_t**)alloc_matrix(height, width, sizeof(uint64_t));
     if(!frompixels | !topixels | !edgepixels){
-        perror("Error opening ouput file\n"); 
-        return -1;
+        perror("can't malloc\n"); 
+        exit(1);
     }
 
 
 
-    //initialize all pixels to 0
-    for (x = 0; x < width; x++) {
-        for (y = 0; y < height; y++) {
-            frompixels[x][y] = 0;
-            topixels[x][y] = 0;
-            edgepixels[x][y] = 0;
-        }
-    }
+    //initialize all pixels to 0; not needed, doen by calloc
+    // for (x = 0; x < width; x++) {
+    //     for (y = 0; y < height; y++) {
+    //         frompixels[x][y] = 0;
+    //         topixels[x][y] = 0;
+    //         edgepixels[x][y] = 0;
+    //     }
+    // }
 
     
     fseek(input, 0, SEEK_SET);
@@ -279,7 +203,7 @@ int main(int argc, const char * argv[]) {
     output = fopen(outputfile, "wb");
     if (output == NULL) {
         perror("Error opening ouput file\n"); 
-        return -1;
+        exit(1);
     }
 
 
@@ -322,10 +246,10 @@ int main(int argc, const char * argv[]) {
         for (x = 0; x < width; x++) {
             //fprintf(stdout, "%llu\n", frompixels[x][y]);
 
-            // no edge from x to y
+            // no edge from y to x 
             if(frompixels[x][y] == 0 && topixels[x][y] == 0 && edgepixels[x][y] == 0){
-                //height line with white if (x, y) is on the line
-                if(opt_l && y == line_num - 1){
+                //highlight line with white if (x, y) is on the line
+                if((opt_l && y == line_num) || (highlights && highlights[y] == 1)){
                     red = 255;
                     green = 255; 
                     blue = 255;
@@ -382,3 +306,137 @@ int main(int argc, const char * argv[]) {
     
     return 0;
 }
+
+
+unsigned int hash(char *str, int length)
+{
+    unsigned int hash = 5381;
+    
+    while (length--)
+        hash = ((hash << 5) + hash) + *str++; /* hash * 33 + c */
+    
+    return hash;
+}
+
+
+uint64_t convert(const char *text)
+{
+    uint64_t number=0;
+    
+    for(; *text; text++)
+    {
+        char digit=*text-'0';
+        number=(number*10)+digit;
+    }
+   return number;
+}
+
+//allocate heap mem for an array of length len and each elem has size elem_size
+void* alloc_array(size_t len, size_t elem_size){
+    return calloc(len, elem_size);
+}
+
+
+void free_array(void* array){
+    free(array);
+}
+
+// allocate heap memory for a 2-D matrix with height height, width width, 
+// and each element has size elem_size. 
+void** alloc_matrix(size_t height, size_t width, size_t elem_size){
+    void** result = calloc(height, sizeof(void*));
+    if(result == NULL){
+        return NULL;
+    }
+    for(size_t i = 0; i < height; i++){
+        result[i] = malloc(width * elem_size);
+        if(result[i] == NULL){
+            //cleanup allocated memory and then return NULL
+            for(int j = 0; j < i; j++){
+                free(result[j]);
+            }
+            free(result);
+            return NULL;
+        }
+    }
+    return result;
+}
+
+
+// free heap memory for a 2-D matrix matrix with height height.
+void free_matrix(void** matrix, size_t height){
+    for(size_t i = 0; i < height; i++){
+        free(matrix[i]);
+    }
+    free(matrix);
+}
+
+// getting input file path and output file path from command line by options -i for input, and -o for 
+// output
+void get_files(char** inputfile, char** outputfile, int argc, char* argv[], size_t filename_length,
+    int* opt_l, size_t* line_num, char** line_highlight_file){
+    int index;
+    int c;
+    while((c = getopt(argc, argv, "i:o:l:f:")) != -1){
+        switch(c){
+            case 'i': 
+                *inputfile = optarg;
+                break; 
+            case 'o':
+                *outputfile = optarg;
+                break;
+            case 'l':
+                *opt_l = 1;
+                *line_num =atoi(optarg);
+                break;
+            case 'f': 
+                *line_highlight_file = optarg;
+                break;
+            case '?': 
+                if(optopt == 'i' | optopt == 'o' | optopt == 'l' | optopt == 'f')
+                    fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+                else if (isprint (optopt))
+                    fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+                else
+                    fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
+                exit(1);
+            default:
+                abort();
+        }
+    }
+
+    for (index = optind; index < argc; index++){
+        printf ("Non-option argument %s\n", argv[index]);
+        exit(1);
+    }
+
+}
+
+// returns -1 if specified highlight is out of matrix bound; 0, otherwise.
+int check_highlight_bound(size_t height, int opt_l, size_t line_num){
+    if(opt_l && line_num >= height){
+        return -1;
+    }
+    return 0;
+}
+
+// returns an array of length height, with 0s and 1s; array[i] == 1 means the ith row should be highlighted
+char* parse_highlights(FILE* highlight_fstream, size_t height){ 
+    size_t num;
+    char* highlights = (char*)alloc_array(height, sizeof(char));
+    if(highlights == NULL){
+        perror("can't malloc\n"); 
+        exit(1);
+
+    }
+    while (fscanf(highlight_fstream, "%zd", &num) == 1){
+        // comparison of num < 0 is always false
+        if(num >= height){
+            perror("at least one of the lines specified in the given file is out of bound\n");
+        }
+        highlights[num] = 1;
+    }
+    return highlights;
+}
+
+
