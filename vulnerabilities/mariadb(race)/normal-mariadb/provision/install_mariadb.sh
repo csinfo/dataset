@@ -13,7 +13,7 @@ sudo rpm -ivh MariaDB-*
 # start marinaDB
 sudo systemctl start mysql
 
-# setting mariadb and root passwd
+# setting mariadb and give the root its root passwd (the root user is called 'root')
 printf '\ny\nvagrant\nvagrant\ny\ny\ny\ny' | mysql_secure_installation
 
 # now after the last command, marinaDB will be running
