@@ -303,6 +303,9 @@ int main(int argc, const char * argv[]) {
     free_matrix((void**)frompixels, height);
     free_matrix((void**)topixels, height);
     free_matrix((void**)edgepixels, height);
+    if(highlights){
+        free_array(highlights);
+    }
     
     return 0;
 }
