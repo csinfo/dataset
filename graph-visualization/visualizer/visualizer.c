@@ -16,12 +16,14 @@
 //  3. Parameterized the input file path and the output file path of this program, identified by -i and -o, 
 //     respectively, on the command line. (Added the get_files function.)
 //  
-//  4. added -l option to specify the line number to highlight
+//  4. added -l option to specify the line number to highlight (horizontal line)
 // 
-//  5. added -f option to specify the line numbers to highlight by file 
+//  5. added -h option to specify the line numbers to highlight by file (horizontal lines)
+// 
+//  6. added -v option to specify the line numbers to highlight by file (vertical lines)
 //
 //  Usage of this program: 
-//  ./program_name -i input_file_path.txt -o output_file_path.bmp -l line_number_to_highlight -f path_to_highlight_file.txt
+//  ./program_name -i input_file_path.txt -o output_file_path.bmp -l line_number_to_highlight -h path_to_highlight_file.txt -v path_to_highlight_file.txt
 //  
 //   options -i and -o are required; others are optional. 
 
@@ -41,7 +43,7 @@ uint64_t convert(const char *text);
 void** alloc_matrix(size_t height, size_t width, size_t elem_size);
 void free_matrix(void** matrix, size_t height);
 void get_files(char** inputfile, char** outputfile, int argc, char* argv[], size_t filename_length, 
-    int* opt_l, size_t* line_num, char** line_highlight_file);
+    int* opt_l, size_t* line_num, char** line_highlight_file_h, char** line_highlight_file_v);
 int check_highlight_bound(size_t height, int opt_l, size_t line_num);
 void* alloc_array(size_t len, size_t elem_size);
 void free_array(void* array);
@@ -73,12 +75,19 @@ int main(int argc, const char * argv[]) {
     //options
     int opt_l = 0;// option for highlighting a single line; 0: false, 1: true
     size_t line_num = 0;
-    char *line_highlight_file = NULL;
-    FILE* highlight_fstream;
-    char* highlights = NULL;
+
+    char* line_highlight_file_h = NULL;
+    FILE* highlight_fstream_h;
+    char* highlights_h = NULL;
+
+    char* line_highlight_file_v = NULL;
+    FILE* highlight_fstream_v;
+    char* highlights_v = NULL;
+
 
     //getting input and output file names from command line
-    get_files(&inputfile, &outputfile, argc, (char**) argv, ARGLEN, &opt_l, &line_num, &line_highlight_file);
+    get_files(&inputfile, &outputfile, argc, (char**) argv, ARGLEN, &opt_l, &line_num, &line_highlight_file_h,
+        &line_highlight_file_v);
 
     // * produce matrix of pixel data from edgelist
     //open the file to read edge list
@@ -110,14 +119,28 @@ int main(int argc, const char * argv[]) {
     }
 
     //parse line_highlight_file if exists
-    if(line_highlight_file != NULL){
-        highlight_fstream = fopen(line_highlight_file, "r");
-        if(highlight_fstream == NULL){
+    if(line_highlight_file_h != NULL){
+        highlight_fstream_h = fopen(line_highlight_file_h, "r");
+        if(highlight_fstream_h == NULL){
             perror("Error opening line highlighting file\n");
             exit(1);
         }
-        highlights = parse_highlights(highlight_fstream, height);
+        highlights_h = parse_highlights(highlight_fstream_h, height);
+        // printf("%d\n", highlights_h[0]);
+        // printf("%d\n", highlights_h[150]);
+        // printf("%d\n", highlights_h[149]);
+        // printf("%d\n", highlights_h[160]);
     }
+
+    if(line_highlight_file_v != NULL){
+        highlight_fstream_v = fopen(line_highlight_file_v, "r");
+        if(highlight_fstream_v == NULL){
+            perror("Error opening line highlighting file\n");
+            exit(1);
+        }
+        highlights_v = parse_highlights(highlight_fstream_v, width);
+    }
+
 
     // printf("width == height == %d\n", (int)width);
     
@@ -249,7 +272,12 @@ int main(int argc, const char * argv[]) {
             // no edge from y to x 
             if(frompixels[x][y] == 0 && topixels[x][y] == 0 && edgepixels[x][y] == 0){
                 //highlight line with white if (x, y) is on the line
-                if((opt_l && y == line_num) || (highlights && highlights[y] == 1)){
+                if((opt_l && y == line_num) || (highlights_h && highlights_h[y] == 1)){
+                    red = 255;
+                    green = 255; 
+                    blue = 255;
+                }
+                else if(highlights_v && highlights_v[x] == 1){
                     red = 255;
                     green = 255; 
                     blue = 255;
@@ -303,8 +331,11 @@ int main(int argc, const char * argv[]) {
     free_matrix((void**)frompixels, height);
     free_matrix((void**)topixels, height);
     free_matrix((void**)edgepixels, height);
-    if(highlights){
-        free_array(highlights);
+    if(highlights_h){ 
+        free_array(highlights_h);
+    }
+    if(highlights_v){ 
+        free_array(highlights_v);
     }
     
     return 0;
@@ -377,10 +408,10 @@ void free_matrix(void** matrix, size_t height){
 // getting input file path and output file path from command line by options -i for input, and -o for 
 // output
 void get_files(char** inputfile, char** outputfile, int argc, char* argv[], size_t filename_length,
-    int* opt_l, size_t* line_num, char** line_highlight_file){
+    int* opt_l, size_t* line_num, char** line_highlight_file_h, char** line_highlight_file_v){
     int index;
     int c;
-    while((c = getopt(argc, argv, "i:o:l:f:")) != -1){
+    while((c = getopt(argc, argv, "i:o:l:h:v:")) != -1){
         switch(c){
             case 'i': 
                 *inputfile = optarg;
@@ -392,11 +423,14 @@ void get_files(char** inputfile, char** outputfile, int argc, char* argv[], size
                 *opt_l = 1;
                 *line_num =atoi(optarg);
                 break;
-            case 'f': 
-                *line_highlight_file = optarg;
+            case 'h': 
+                *line_highlight_file_h = optarg;
+                break;
+            case 'v': 
+                *line_highlight_file_v = optarg;
                 break;
             case '?': 
-                if(optopt == 'i' | optopt == 'o' | optopt == 'l' | optopt == 'f')
+                if(optopt == 'i' | optopt == 'o' | optopt == 'l' | optopt == 'h' | optopt == 'v')
                     fprintf(stderr, "Option -%c requires an argument.\n", optopt);
                 else if (isprint (optopt))
                     fprintf (stderr, "Unknown option `-%c'.\n", optopt);
