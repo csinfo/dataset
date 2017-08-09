@@ -14,7 +14,7 @@ sudo sed -i '$ a GRUB_SAVEDEFAULT=false' /etc/default/grub
 sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 
 #kernel=$(grep -P "submenu|^menuentry" /boot/grub2/grub.cfg | cut -d "'" -f2 | grep camflow)
-sudo grub2-set-default "Fedora (4.11.6camflow-0.3.3) 25 (Workstation Edition)"
+sudo grub2-set-default "Fedora (4.12.4camflow-0.3.4) 26 (Workstation Edition)"
 
 
 
@@ -29,4 +29,6 @@ sudo chown -R vagrant /home/vagrant/.ssh
 #/vagrant/provision/expect.sh
 
 #clean up before repackage 
+sudo rm /etc/camflow-boot_id
+sudo rm /etc/camflow-machine_id
 sudo /vagrant/repackage/clean-up.sh
