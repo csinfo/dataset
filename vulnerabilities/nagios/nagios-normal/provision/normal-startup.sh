@@ -8,12 +8,10 @@ sudo camflow --track-file /etc/rc.d/init.d/nagios propagate
 # simulate the normal restart of nagios program by the sysadmin 
 sudo systemctl restart nagios
 
-# disable camflow to disregard uneccessary provenance data
-sleep 20s
+sleep 5
 sudo camflow -e false
-
-# give camflow some time to write to audit.log
-sleep 60 
+# wait a while so that relay fs writes all the data to audit.log
+sleep 30
 
 # export log 
-cp /tmp/audit.log /vagrant/prov-data/audit.log
+cp /tmp/audit.log /vagrant/prov-data/nagios-normal-data.log
