@@ -1,3 +1,4 @@
+# generating data
 cd wget-exploit/
 vagrant up
 vagrant destroy -f
