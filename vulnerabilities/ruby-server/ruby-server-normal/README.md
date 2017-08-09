@@ -1,3 +1,1 @@
-Run 'vagrant up' to simulate the normal behavior of a ruby server and to get its provenance data
-
-After the command 'vagrant up', you will be able to find the provenance data in '/tmp/audit.log'. You can copy this log file from the VM to your local machine by 'cp /tmp/audit.log /vagrant/'. Now its copy should appear in the same folder as where this README.md and the Vagrantfile locate on your local machine. 
+Run './ruby-server-normal-run.sh' to simulate the normal behavior of a ruby server and to get its provenance data
