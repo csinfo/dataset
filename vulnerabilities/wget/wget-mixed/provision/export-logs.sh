@@ -4,5 +4,5 @@
 #  sleep 5
 #done
 
-cp /tmp/audit.log /vagrant/prov-data/wget-mixed-prov-data.log
+cp /tmp/audit.log /vagrant/prov-data/wget-mixed-data.log
 #cp /tmp/camflow.clg /vagrant/prov-data/camflow.clg
