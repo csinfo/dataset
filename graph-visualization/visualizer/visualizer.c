@@ -147,9 +147,9 @@ int main(int argc, const char * argv[]) {
     // uint64_t frompixels[width][height];
     // uint64_t topixels[width][height];   
     // uint64_t edgepixels[width][height];
-    uint64_t** frompixels = (uint64_t**)alloc_matrix(height, width, sizeof(uint64_t));
-    uint64_t** topixels = (uint64_t**)alloc_matrix(height, width, sizeof(uint64_t));
-    uint64_t** edgepixels = (uint64_t**)alloc_matrix(height, width, sizeof(uint64_t));
+    int64_t** frompixels = (int64_t**)alloc_matrix(height, width, sizeof(uint64_t));
+    int64_t** topixels = (int64_t**)alloc_matrix(height, width, sizeof(uint64_t));
+    int64_t** edgepixels = (int64_t**)alloc_matrix(height, width, sizeof(uint64_t));
     if(!frompixels | !topixels | !edgepixels){
         perror("can't malloc\n"); 
         exit(1);
@@ -157,14 +157,14 @@ int main(int argc, const char * argv[]) {
 
 
 
-    //initialize all pixels to 0; not needed, doen by calloc
-    // for (x = 0; x < width; x++) {
-    //     for (y = 0; y < height; y++) {
-    //         frompixels[x][y] = 0;
-    //         topixels[x][y] = 0;
-    //         edgepixels[x][y] = 0;
-    //     }
-    // }
+    //initialize all pixels to -1
+    for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+            frompixels[y][x] = -1;
+            topixels[y][x] = -1;
+            edgepixels[y][x] = 0;
+        }
+    }
 
     
     fseek(input, 0, SEEK_SET);
@@ -269,8 +269,8 @@ int main(int argc, const char * argv[]) {
         for (x = 0; x < width; x++) {
             //fprintf(stdout, "%llu\n", frompixels[x][y]);
 
-            // no edge from y to x 
-            if(frompixels[x][y] == 0 && topixels[x][y] == 0 && edgepixels[x][y] == 0){
+            // no edge from x to y
+            if(frompixels[x][y] == -1 && topixels[x][y] == -1){
                 //highlight line with white if (x, y) is on the line
                 if((opt_l && y == line_num) || (highlights_h && highlights_h[y] == 1)){
                     red = 255;
