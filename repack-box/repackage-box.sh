@@ -5,5 +5,8 @@
 vagrant up
 
 vagrant ssh -c '/vagrant/repackage/resolve-issues.sh'
+vagrant halt
+vagrant up
+vagrant ssh -c '/vagrant/repackage/clean-up.sh'
 
 vagrant package --base CamFlow-rpm-test

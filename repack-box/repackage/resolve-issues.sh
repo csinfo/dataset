@@ -16,16 +16,6 @@ sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 #kernel=$(grep -P "submenu|^menuentry" /boot/grub2/grub.cfg | cut -d "'" -f2 | grep camflow)
 sudo grub2-set-default "Fedora (4.12.4camflow-0.3.4) 26 (Workstation Edition)"
 
-
-
-# solve SSH issues that would have occurred after packaging the box
-sudo rm /home/vagrant/.ssh/*
-
-sudo wget --no-check-certificate https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub -O /home/vagrant/.ssh/authorized_keys 
-sudo chmod 0700 /home/vagrant/.ssh  
-sudo chmod 0600 /home/vagrant/.ssh/authorized_keys 
-sudo chown -R vagrant /home/vagrant/.ssh
-
 #/vagrant/provision/expect.sh
 
 # curl -s https://packagecloud.io/install/repositories/camflow/provenance/script.rpm.sh.rpm | sudo bash
@@ -34,7 +24,17 @@ sudo chown -R vagrant /home/vagrant/.ssh
 # specifying kernel src
 # export KERN_DIR=/usr/src/kernels/4.12.4camflow-0.3.4
 
-#clean up before repackage 
-sudo rm /etc/camflow-boot_id
-sudo rm /etc/camflow-machine_id
-sudo /vagrant/repackage/clean-up.sh
+
+# # manually update guest additions to match the host 
+# cd /home/vagrant
+# wget http://download.virtualbox.org/virtualbox/5.1.26/VBoxGuestAdditions_5.1.26.iso
+# sudo mkdir /media/VBoxGuestAdditions
+# sudo mount -o loop,ro VBoxGuestAdditions_5.1.26.iso /media/VBoxGuestAdditions
+# sudo sh /media/VBoxGuestAdditions/VBoxLinuxAdditions.run
+# rm VBoxGuestAdditions_5.1.26.iso
+# sudo umount /media/VBoxGuestAdditions
+# sudo rmdir /media/VBoxGuestAdditions
+# # fix bug in guest additions isntaller 
+# # https://stackoverflow.com/questions/28494349/vagrant-failed-to-mount-folders-in-linux-guest-vboxsf-file-system-is-not-av
+# sudo ln -s /opt/VBoxGuestAdditions-5.1.26/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions
+
