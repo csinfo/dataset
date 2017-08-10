@@ -32,7 +32,7 @@ sudo chown -R vagrant /home/vagrant/.ssh
 # sudo dnf install kernel-headers-4.12.4camflow_0.3.4-1.x86_64
 
 # specifying kernel src
-export KERN_DIR=/usr/src/kernels/4.12.4camflow-0.3.4
+# export KERN_DIR=/usr/src/kernels/4.12.4camflow-0.3.4
 
 #clean up before repackage 
 sudo rm /etc/camflow-boot_id
