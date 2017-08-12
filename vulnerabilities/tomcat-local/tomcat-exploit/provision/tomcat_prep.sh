@@ -5,7 +5,12 @@ cd /home/vagrant
 # cd /usr/share/
 sudo wget "ftp://mirror.switch.ch/pool/4/mirror/fedora/linux/releases/25/Server/x86_64/os/Packages/t/tomcat-8.0.36-2.fc25.noarch.rpm"
 sudo wget ftp://195.220.108.108/linux/fedora/linux/releases/25/Everything/x86_64/os/Packages/t/tomcat-webapps-8.0.36-2.fc25.noarch.rpm
-sudo dnf install -y tomcat-8.0.36-2.fc25.noarch.rpm tomcat-webapps-8.0.36-2.fc25.noarch.rpm
+
+sudo wget ftp://195.220.108.108/linux/fedora/linux/releases/25/Everything/x86_64/os/Packages/t/tomcat-lib-8.0.36-2.fc25.noarch.rpm
+sudo wget ftp://195.220.108.108/linux/fedora/linux/releases/25/Everything/x86_64/os/Packages/t/tomcat-el-3.0-api-8.0.36-2.fc25.noarch.rpm
+sudo wget ftp://195.220.108.108/linux/fedora/linux/releases/25/Everything/x86_64/os/Packages/t/tomcat-jsp-2.3-api-8.0.36-2.fc25.noarch.rpm
+sudo wget ftp://195.220.108.108/linux/fedora/linux/releases/25/Everything/x86_64/os/Packages/t/tomcat-servlet-3.1-api-8.0.36-2.fc25.noarch.rpm
+sudo dnf install -y tomcat-servlet-3.1-api-8.0.36-2.fc25.noarch.rpm tomcat-jsp-2.3-api-8.0.36-2.fc25.noarch.rpm tomcat-el-3.0-api-8.0.36-2.fc25.noarch.rpm tomcat-lib-8.0.36-2.fc25.noarch.rpm tomcat-8.0.36-2.fc25.noarch.rpm tomcat-webapps-8.0.36-2.fc25.noarch.rpm
 
 
 # fedora 24 tomcat

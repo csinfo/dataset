@@ -8,7 +8,7 @@ sudo camflow -e false
 sleep 30
 
 # export provenance data
-sudo cp /tmp/audit.log /vagrant/prov-data/
+sudo cp /tmp/audit.log /vagrant/prov-data/tomcat-local-normal-data.log
 #cp /tmp/camflow.clg /vagrant/prov-data/
 
 
