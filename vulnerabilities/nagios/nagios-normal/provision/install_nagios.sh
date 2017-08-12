@@ -11,10 +11,10 @@ sudo usermod -a -G nagcmd nagios
 #install nagios core
 curl -L -O https://sourceforge.net/projects/nagios/files/nagios-4.x/nagios-4.2.3/nagios-4.2.3.tar.gz
 tar xvf nagios-*.tar.gz 
-cd nagios-*
+cd nagios-4.2.3
 
-./configure --with-command-group=nagcmd 
-make all 
+sudo ./configure --with-command-group=nagcmd 
+sudo make all 
 sudo make install 
 sudo make install-commandmode
 sudo make install-init
@@ -28,17 +28,17 @@ cd /home/vagrant
 curl -L -O http://nagios-plugins.org/download/nagios-plugins-2.1.3.tar.gz 
 tar xvf nagios-plugins-*.tar.gz
 cd nagios-plugins-* 
-./configure --with-nagios-user=nagios --with-nagios-group=nagios --with-openssl 
-make 
+sudo ./configure --with-nagios-user=nagios --with-nagios-group=nagios --with-openssl 
+sudo make 
 sudo make install 
 
 #install NRPE 
 cd /home/vagrant 
 curl -L -O http://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz
 tar xvf nrpe-*.tar.gz 
-cd nrpe-* 
-./configure --enable-command-args --with-nagios-user=nagios --with-nagios-group=nagios --with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu
-make all  
+cd nrpe-2.15
+sudo ./configure --enable-command-args --with-nagios-user=nagios --with-nagios-group=nagios --with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu
+sudo make all  
 sudo make install 
 sudo make install-xinetd 
 sudo make install-daemon-config
