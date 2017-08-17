@@ -80,57 +80,57 @@ Vagrant.configure(2) do |config|
     client.vm.network "private_network", ip: "192.168.33.9"
     client.vm.provision "shell", path: "provision/client-pre-provision-good.sh"
     # #client.vm.provision "shell", path: "provision/client-pre-provision-bad.sh"
-    client.vm.provision "shell", path: "provision/config_camflow.sh"
-    client.vm.provision :unix_reboot
-    client.vm.provision "shell", path: "provision/wget-apple.sh"
+    # client.vm.provision "shell", path: "provision/config_camflow.sh"
+    # client.vm.provision :unix_reboot
+    client.vm.provision "shell", path: "provision/wget-9.sh"
     client.vm.provision "shell", path: "provision/sleep.sh"
-    client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-apple.log"
-    client.vm.provision "shell", path: "provision/enable-camflow.sh"
-    client.vm.provision :unix_reboot
-    client.vm.provision "shell", path: "provision/wget-cnn.sh"
-    client.vm.provision "shell", path: "provision/sleep.sh"
-    client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-cnn.log"
-    client.vm.provision "shell", path: "provision/enable-camflow.sh"
-    client.vm.provision :unix_reboot
-    client.vm.provision "shell", path: "provision/wget-fb.sh"
-    client.vm.provision "shell", path: "provision/sleep.sh"
-    client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-fb.log"
-    client.vm.provision "shell", path: "provision/enable-camflow.sh"
-    client.vm.provision :unix_reboot
-    client.vm.provision "shell", path: "provision/wget-google.sh"
-    client.vm.provision "shell", path: "provision/sleep.sh"
-    client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-google.log"
-    client.vm.provision "shell", path: "provision/enable-camflow.sh"
-    client.vm.provision :unix_reboot
-    client.vm.provision "shell", path: "provision/wget-yahoo.sh"
-    client.vm.provision "shell", path: "provision/sleep.sh"
-    client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-yahoo.log"
-    client.vm.provision "shell", path: "provision/enable-camflow.sh"
-    client.vm.provision :unix_reboot
-    client.vm.provision "shell", path: "provision/wget-twitter.sh"
-    client.vm.provision "shell", path: "provision/sleep.sh"
-    client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-twitter.log"
-    client.vm.provision "shell", path: "provision/enable-camflow.sh"
-    client.vm.provision :unix_reboot
-    client.vm.provision "shell", path: "provision/wget-httpd.sh"
-    client.vm.provision "shell", path: "provision/sleep.sh"
-    client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-httpd.log"
-    client.vm.provision "shell", path: "provision/enable-camflow.sh"
-    client.vm.provision :unix_reboot
-    client.vm.provision "shell", path: "provision/wget-lynx.sh"
-    client.vm.provision "shell", path: "provision/sleep.sh"
-    client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-lynx.log"
-    client.vm.provision "shell", path: "provision/enable-camflow.sh"
-    client.vm.provision :unix_reboot
-    client.vm.provision "shell", path: "provision/wget-php.sh"
-    client.vm.provision "shell", path: "provision/sleep.sh"
-    client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-php.log"
-    client.vm.provision "shell", path: "provision/enable-camflow.sh"
-    client.vm.provision :unix_reboot
-    client.vm.provision "shell", path: "provision/wget-vim.sh"
-    client.vm.provision "shell", path: "provision/sleep.sh"
-    client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-vim.log"
-    client.vm.provision "shell", path: "provision/enable-camflow.sh"
+    client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-99.log"
+    # client.vm.provision "shell", path: "provision/enable-camflow.sh"
+    # client.vm.provision :unix_reboot
+    # client.vm.provision "shell", path: "provision/wget-cnn.sh"
+    # client.vm.provision "shell", path: "provision/sleep.sh"
+    # client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-cnn.log"
+    # client.vm.provision "shell", path: "provision/enable-camflow.sh"
+    # client.vm.provision :unix_reboot
+    # client.vm.provision "shell", path: "provision/wget-fb.sh"
+    # client.vm.provision "shell", path: "provision/sleep.sh"
+    # client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-fb.log"
+    # client.vm.provision "shell", path: "provision/enable-camflow.sh"
+    # client.vm.provision :unix_reboot
+    # client.vm.provision "shell", path: "provision/wget-google.sh"
+    # client.vm.provision "shell", path: "provision/sleep.sh"
+    # client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-google.log"
+    # client.vm.provision "shell", path: "provision/enable-camflow.sh"
+    # client.vm.provision :unix_reboot
+    # client.vm.provision "shell", path: "provision/wget-yahoo.sh"
+    # client.vm.provision "shell", path: "provision/sleep.sh"
+    # client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-yahoo.log"
+    # client.vm.provision "shell", path: "provision/enable-camflow.sh"
+    # client.vm.provision :unix_reboot
+    # client.vm.provision "shell", path: "provision/wget-twitter.sh"
+    # client.vm.provision "shell", path: "provision/sleep.sh"
+    # client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-twitter.log"
+    # client.vm.provision "shell", path: "provision/enable-camflow.sh"
+    # client.vm.provision :unix_reboot
+    # client.vm.provision "shell", path: "provision/wget-httpd.sh"
+    # client.vm.provision "shell", path: "provision/sleep.sh"
+    # client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-httpd.log"
+    # client.vm.provision "shell", path: "provision/enable-camflow.sh"
+    # client.vm.provision :unix_reboot
+    # client.vm.provision "shell", path: "provision/wget-lynx.sh"
+    # client.vm.provision "shell", path: "provision/sleep.sh"
+    # client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-lynx.log"
+    # client.vm.provision "shell", path: "provision/enable-camflow.sh"
+    # client.vm.provision :unix_reboot
+    # client.vm.provision "shell", path: "provision/wget-php.sh"
+    # client.vm.provision "shell", path: "provision/sleep.sh"
+    # client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-php.log"
+    # client.vm.provision "shell", path: "provision/enable-camflow.sh"
+    # client.vm.provision :unix_reboot
+    # client.vm.provision "shell", path: "provision/wget-vim.sh"
+    # client.vm.provision "shell", path: "provision/sleep.sh"
+    # client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-vim.log"
+    # client.vm.provision "shell", path: "provision/enable-camflow.sh"
   end
 
   #
