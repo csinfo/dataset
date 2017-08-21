@@ -82,9 +82,9 @@ Vagrant.configure(2) do |config|
     # #client.vm.provision "shell", path: "provision/client-pre-provision-bad.sh"
     client.vm.provision "shell", path: "provision/config_camflow.sh"
     client.vm.provision :unix_reboot
-    client.vm.provision "shell", path: "provision/wget-github.sh"
+    client.vm.provision "shell", path: "provision/wget-6.sh"
     client.vm.provision "shell", path: "provision/sleep.sh"
-    client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-normal-github.log"
+    client.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/wget-validate-9.log"
   end
 
   #
