@@ -63,6 +63,7 @@ Vagrant.configure(2) do |config|
     server.vm.provision "shell", path: "provision/tomcat_prep.sh"
     # server.vm.provision :unix_reboot
     server.vm.provision "shell", path: "provision/server-post-provision.sh"
+    server.vm.provision "shell", inline: "sudo cp /tmp/audit.log /vagrant/prov-data/tomcat-remote-normal-109.log"
   end
 
 
