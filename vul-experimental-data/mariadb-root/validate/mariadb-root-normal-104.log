@@ -1,0 +1,1 @@
+{"prefix":{"prov" : "http://www.w3.org/ns/prov", "cf":"http://www.camflow.org"},"entity":{"976267240":{"prov:label":"[machine] 976267240","cf:camflow":"v0.3.5","cf:sysname":"Linux","cf:nodename":"fedora26-vbox.localdomain","cf:release":"4.12.4camflow-0.3.4","cf:version":"#1 SMP Wed Aug 9 22:38:46 UTC 2017","cf:machine":"x86_64", "cf:date":"2017:09:12T03:13:58"}}}
