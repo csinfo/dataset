@@ -9,4 +9,4 @@ vagrant halt
 vagrant up
 vagrant ssh -c '/vagrant/repackage/clean-up.sh'
 
-vagrant package --base CamFlow-rpm-test
+vagrant package --base CamFlow-light
