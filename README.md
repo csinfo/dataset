@@ -20,3 +20,4 @@ In an attempt to remove both files before repackaging and updating camflow to th
 - `MySQL / MariaDB / Percona Race Condition`: CVE-2016-6663 / (Oracle) CVE-2016-5616
 - `MySQL / MariaDB / Percona Root Privilege Escalation`: CVE-2016-6664 / (Oracle) CVE-2016-5617
 - `Apache Tomcat Root Privilege Escalation`: CVE-2016-5425
+- `Ruby OOM Server Crash`: https://bugs.ruby-lang.org/issues/11692
