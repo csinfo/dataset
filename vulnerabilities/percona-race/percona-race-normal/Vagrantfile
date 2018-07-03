@@ -84,4 +84,5 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "provision/config-camflow.sh"
   config.vm.provision "shell", path: "provision/repair-table.sh"
   config.vm.provision "shell", path: "provision/export-log.sh"
+  config.vm.provision "shell", inline: "cp /tmp/audit.log /vagrant/prov-data/percona-race-normal-109.log"
 end

@@ -60,9 +60,10 @@ Vagrant.configure(2) do |config|
      vb.name = "nagios-server"
     end
     server.vm.network "private_network", ip: "192.168.33.10"
-    server.vm.provision "shell", path: "provision/install_LAMP.sh" 
-    server.vm.provision "shell", path: "provision/install_nagios.sh" 
+    server.vm.provision "shell", path: "provision/install_LAMP.sh"
+    server.vm.provision "shell", path: "provision/install_nagios.sh"
     server.vm.provision "shell", path: "provision/normal-startup.sh"
+    server.vm.provision "shell", inline: "cp /tmp/audit.log /vagrant/prov-data/nagios-normal-109.log"
     # server.vm.provision "shell", path: "provision/insert-index-html-on-server.sh"
     # server.vm.provision "shell", path: "provision/add-monitored-server-to-nagios.sh"
     #server.vm.provision "shell", path: "provision/export-log-before.sh"
@@ -86,7 +87,7 @@ Vagrant.configure(2) do |config|
   #   end
   #   client.vm.network "private_network", ip: "192.168.33.11"
   #   client.vm.provision "shell", path: "provision/wget-website.sh"
-  #   #look at the index files to see if the apache web server is running correctly 
+  #   #look at the index files to see if the apache web server is running correctly
   # end
 
   #

@@ -1,8 +1,8 @@
 # prerequisite 
 #sudo dnf install -y expect
 
-# diable GUI 
-sudo systemctl set-default multi-user.target
+# diable GUI
+# sudo systemctl set-default multi-user.target
 
 
 
@@ -14,7 +14,7 @@ sudo sed -i '$ a GRUB_SAVEDEFAULT=false' /etc/default/grub
 sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 
 #kernel=$(grep -P "submenu|^menuentry" /boot/grub2/grub.cfg | cut -d "'" -f2 | grep camflow)
-sudo grub2-set-default "Fedora (4.12.4camflow-0.3.4) 26 (Workstation Edition)"
+sudo grub2-set-default "Fedora (4.13.4camflow-0.3.6) 26 (Twenty Six)"
 
 #/vagrant/provision/expect.sh
 

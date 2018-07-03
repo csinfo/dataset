@@ -13,3 +13,11 @@ All vulnerabilities should work on dennisli1/frapbox, which has operating system
 However, dennisli1/frapbox does not have the latest camflow 4.12.4 installed, because it only works on feodra26. And, /etc/camflow-machine_id and /etc/camflow-boot_id were not deleted before repackaging the box, resulting in the same camflow-machine_id file and the same camflow-boot_id file in every VM using this box. 
 
 In an attempt to remove both files before repackaging and updating camflow to the lastest version 4.12.4, the new box dennisli1/frapboxfc26 VMs boot up with different machine ids every time. However, there are several issues with fedora26. First, reboot seems to be a problem. The OS gets stuck on or before the login page without a clear pattern (mostly happen after the second reboot). Second, for some exploits to work, it has to have certain versions of the kernel libraries installed, but they can't be downgraded directly using dnf simply because the repository does not contain the older versions. In an attempt to remove them and install the older versions through rpm packages, some of kernel libraries can't be removed through dnf due to the consequences of removing "protected packages" like the program sudo. 
+
+## List of vulnerabilities:
+- `wget`: CVE-2016-4971
+- `nagios`: CVE-2016-9566
+- `MySQL / MariaDB / Percona Race Condition`: CVE-2016-6663 / (Oracle) CVE-2016-5616
+- `MySQL / MariaDB / Percona Root Privilege Escalation`: CVE-2016-6664 / (Oracle) CVE-2016-5617
+- `Apache Tomcat Root Privilege Escalation`: CVE-2016-5425
+- `Ruby OOM Server Crash`: https://bugs.ruby-lang.org/issues/11692
